@@ -10,6 +10,8 @@ on:
   push:
     paths-ignore:
       - 'README.md'
+    branches-ignore:
+      - main
 
 # Testing only needs permissions to read the repository contents.
 permissions:
