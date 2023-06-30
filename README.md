@@ -1,6 +1,9 @@
 # Terraform APISIX Provider
 The APISIX Provider allows Terraform to manage APISIX resources.
 
+## APISIX Compatibility
+Tested on APISIX version `3.3.0`
+
 ## Requirements
 
 -	[Terraform](https://www.terraform.io/downloads.html) 1.x
