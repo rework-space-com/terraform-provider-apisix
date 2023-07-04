@@ -33,16 +33,17 @@ resource "apisix_ssl_certificate" "example" {
 
 ### Optional
 
-- `labels` (Map of String) Attributes of the resource specified as key-value pairs. An individual pair cannot be deleted using APISIX APIIn order to delete an individual pair, you can delete all labels and reapply the resource with the desired labels map
-- `snis` (List of String) A non-empty array of HTTPS SNI. Required if `type` is `server`
+- `labels` (Map of String) Attributes of the resource specified as key-value pairs. An individual pair cannot be deleted using APISIX API. In order to delete an individual pair, you can delete all labels and reapply the resource with the desired labels map
+- `snis` (List of String) A non-empty array of HTTPS SNI. Required if `type` is `server`.
 - `status` (Number) Enables the current SSL. Set to `1` (enabled) by default. `1` to enable, `0` to disable
-- `type` (String) Identifies the type of certificate, default `server`
-`client` Indicates that the certificate is a client certificate, which is used when APISIX accesses the upstream;
-`server` Indicates that the certificate is a server-side certificate, which is used by APISIX when verifying client requests.
+- `type` (String) Identifies the type of certificate, default `server`.
+`client` Indicates that the certificate is a client certificate, which is used when APISIX accesses the upstream; `server` Indicates that the certificate is a server-side certificate, which is used by APISIX when verifying client requests.
 
 ### Read-Only
 
 - `id` (String) Identifier of the certificate.
+- `validity_end` (Number) Expiration date of the SSL certificate (`notAfter` date) in Unix time format. Used in the APISIX Dasboard.
+- `validity_start` (Number) Start date of the SSL certificate (`notBefore` date) in Unix time format. Used in the APISIX Dasboard.
 
 ## Import
 
