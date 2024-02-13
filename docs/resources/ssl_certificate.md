@@ -42,8 +42,8 @@ resource "apisix_ssl_certificate" "example" {
 ### Read-Only
 
 - `id` (String) Identifier of the certificate.
-- `validity_end` (Number) Expiration date of the SSL certificate (`notAfter` date) in Unix time format. Used in the APISIX Dasboard.
-- `validity_start` (Number) Start date of the SSL certificate (`notBefore` date) in Unix time format. Used in the APISIX Dasboard.
+- `validity_end` (Number, Deprecated) Expiration date of the SSL certificate (`notAfter` date) in Unix time format. Used in the APISIX Dasboard.
+- `validity_start` (Number, Deprecated) Start date of the SSL certificate (`notBefore` date) in Unix time format. Used in the APISIX Dasboard.
 
 ## Import
 
