@@ -1,4 +1,4 @@
-default: testacc
+default: build
 
 # Run acceptance tests
 .PHONY: testacc

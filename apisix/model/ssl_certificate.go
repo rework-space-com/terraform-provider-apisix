@@ -91,16 +91,18 @@ var SSLCertificateSchema = schema.Schema{
 		"validity_end": schema.Int64Attribute{
 			MarkdownDescription: "Expiration date of the SSL certificate (`notAfter` date) in Unix time format. " +
 				"Used in the APISIX Dasboard.",
-			Required: false,
-			Optional: false,
-			Computed: true,
+			Required:           false,
+			Optional:           false,
+			Computed:           true,
+			DeprecationMessage: "This attribute is not compatible with APISIX from v3.6.0 and will be removed in the next major version of the provider.",
 		},
 		"validity_start": schema.Int64Attribute{
 			MarkdownDescription: "Start date of the SSL certificate (`notBefore` date) in Unix time format. " +
 				"Used in the APISIX Dasboard.",
-			Required: false,
-			Optional: false,
-			Computed: true,
+			Required:           false,
+			Optional:           false,
+			Computed:           true,
+			DeprecationMessage: "This attribute is not compatible with APISIX from v3.6.0 and will be removed in the next major version of the provider.",
 		},
 	},
 }
