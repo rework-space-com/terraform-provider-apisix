@@ -2,7 +2,7 @@
 
 ## 1.1.2 (13 Feb, 2024)
 
-BUG FIXES
+BUG FIXES:
 
 - resource/apisix_upstream: Updating upstream's "service_name" requires recreation of upstream ([#5](https://github.com/rework-space-com/terraform-provider-apisix/issues/5))
 
