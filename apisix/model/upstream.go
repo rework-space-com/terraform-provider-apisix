@@ -62,9 +62,6 @@ var UpstreamSchema = schema.Schema{
 		"service_name": schema.StringAttribute{
 			MarkdownDescription: "Service name used for service discovery. Can't be used with `nodes`",
 			Optional:            true,
-			PlanModifiers: []planmodifier.String{
-				stringplanmodifier.RequiresReplace(),
-			},
 		},
 		"discovery_type": schema.StringAttribute{
 			MarkdownDescription: "The type of service discovery. Required, if `service_name` is used",
