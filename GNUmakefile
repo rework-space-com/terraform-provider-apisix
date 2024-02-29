@@ -1,16 +1,12 @@
 default: build
 
-# Run acceptance tests
-.PHONY: testacc
+build: 
+	go install
 
 testacc:
 	TF_ACC=1 go test ./... -v $(TESTARGS) -timeout 120m
 
-build: 
-	go install
-
 doc:
-	go get github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs
 	go generate ./...
 
 fmt:
@@ -18,3 +14,5 @@ fmt:
 
 deps:
 	go mod tidy
+
+.PHONY: build testacc doc fmt deps

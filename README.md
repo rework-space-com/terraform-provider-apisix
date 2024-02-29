@@ -1,20 +1,10 @@
 # Terraform APISIX Provider
-The APISIX Provider allows Terraform to manage APISIX resources.
+Terraform provider to configure Apache APISIX® using its API.
 
 ## APISIX Compatibility
-Tested on APISIX version `3.3.0`
+Tested with Apache APISIX® `3.8.0`.
 
-## Requirements
-
--	[Terraform](https://www.terraform.io/downloads.html) 1.x
--	[Go](https://golang.org/doc/install) 1.19.x (to build the provider plugin)
-
-## Contributing to the provider
-
-To contribute, please read the [contribution guidelines](_about/CONTRIBUTING.md). You may also [report an issue](https://github.com/rework-space-com/terraform-provider-apisix/issues/new/choose).
-
-
-## Provider configuration
+## Usage
 The provider configuration method loads configuration data either from environment variables, or from the provider block in Terraform configuration. 
 
 ```terraform
@@ -29,3 +19,12 @@ $ APISIX_ENDPOINT=http://127.0.0.1:9180 \
 APISIX_API_KEY=edd1c9f034335f136f87ad84b625c8f1 \
 terraform plan
 ```
+
+## Development
+
+-	[Terraform](https://www.terraform.io/downloads.html) 1.x
+-	[Go](https://golang.org/doc/install) 1.20.x (to build the provider plugin)
+
+## Contributing to the provider
+
+To contribute, please read the [contribution guidelines](_about/CONTRIBUTING.md). You may also [report an issue](https://github.com/rework-space-com/terraform-provider-apisix/issues/new/choose).
