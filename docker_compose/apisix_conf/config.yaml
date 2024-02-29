@@ -16,6 +16,8 @@
 #
 
 apisix:
+  proxy_mode: http&stream        # enable both http and stream modes
+  
   node_listen: 9080              # APISIX listening port
   enable_ipv6: false
 

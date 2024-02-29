@@ -24,15 +24,13 @@ import (
 
 // SSLCertificateResourceModel maps the resource schema data.
 type SSLCertificateResourceModel struct {
-	ID            types.String `tfsdk:"id"`
-	Status        types.Int64  `tfsdk:"status"`
-	Certificate   types.String `tfsdk:"certificate"`
-	PrivateKey    types.String `tfsdk:"private_key"`
-	Snis          types.List   `tfsdk:"snis"`
-	Type          types.String `tfsdk:"type"`
-	Labels        types.Map    `tfsdk:"labels"`
-	ValidityEnd   types.Int64  `tfsdk:"validity_end"`
-	ValidityStart types.Int64  `tfsdk:"validity_start"`
+	ID          types.String `tfsdk:"id"`
+	Status      types.Int64  `tfsdk:"status"`
+	Certificate types.String `tfsdk:"certificate"`
+	PrivateKey  types.String `tfsdk:"private_key"`
+	Snis        types.List   `tfsdk:"snis"`
+	Type        types.String `tfsdk:"type"`
+	Labels      types.Map    `tfsdk:"labels"`
 }
 
 var SSLCertificateSchema = schema.Schema{
@@ -88,22 +86,6 @@ var SSLCertificateSchema = schema.Schema{
 				int64validator.OneOf([]int64{0, 1}...),
 			},
 		},
-		"validity_end": schema.Int64Attribute{
-			MarkdownDescription: "Expiration date of the SSL certificate (`notAfter` date) in Unix time format. " +
-				"Used in the APISIX Dasboard.",
-			Required:           false,
-			Optional:           false,
-			Computed:           true,
-			DeprecationMessage: "This attribute is not compatible with APISIX from v3.6.0 and will be removed in the next major version of the provider.",
-		},
-		"validity_start": schema.Int64Attribute{
-			MarkdownDescription: "Start date of the SSL certificate (`notBefore` date) in Unix time format. " +
-				"Used in the APISIX Dasboard.",
-			Required:           false,
-			Optional:           false,
-			Computed:           true,
-			DeprecationMessage: "This attribute is not compatible with APISIX from v3.6.0 and will be removed in the next major version of the provider.",
-		},
 	},
 }
 
@@ -115,8 +97,6 @@ func SSLCertificateFromTerraformToAPI(ctx context.Context, terraformDataModel *S
 
 	terraformDataModel.Snis.ElementsAs(ctx, &apiDataModel.SNIs, false)
 	terraformDataModel.Labels.ElementsAs(ctx, &apiDataModel.Labels, false)
-	apiDataModel.ValidityStart = terraformDataModel.ValidityStart.ValueInt64Pointer()
-	apiDataModel.ValidityEnd = terraformDataModel.ValidityEnd.ValueInt64Pointer()
 
 	tflog.Debug(ctx, "Result of the SSLCertificateFromTerraformToAPI", map[string]any{
 		"Values": apiDataModel,
@@ -135,9 +115,6 @@ func SSLCertificateFromAPIToTerraform(ctx context.Context, apiDataModel *api_cli
 
 	terraformDataModel.Snis, _ = types.ListValueFrom(ctx, types.StringType, apiDataModel.SNIs)
 	terraformDataModel.Labels, _ = types.MapValueFrom(ctx, types.StringType, apiDataModel.Labels)
-
-	terraformDataModel.ValidityStart = types.Int64PointerValue(apiDataModel.ValidityStart)
-	terraformDataModel.ValidityEnd = types.Int64PointerValue(apiDataModel.ValidityEnd)
 
 	tflog.Debug(ctx, "Result of the SSLCertificateFromAPIToTerraform", map[string]any{
 		"Values": terraformDataModel,
@@ -196,27 +173,4 @@ func CertSNIS(crt string, key string) ([]string, error) {
 	}
 
 	return snis, nil
-}
-
-// Get NotAfter date from the SSL Certificate
-func GetCertNotAfter(crt string) (int64, error) {
-	certDERBlock, _ := pem.Decode([]byte(crt))
-	if certDERBlock == nil {
-		return 0, nil
-	}
-
-	x509Cert, err := x509.ParseCertificate(certDERBlock.Bytes)
-	return x509Cert.NotAfter.Unix(), err
-}
-
-// Get NotBefore date from the SSL Certificate
-func GetCertNotBefore(crt string) (int64, error) {
-	certDERBlock, _ := pem.Decode([]byte(crt))
-	if certDERBlock == nil {
-		return 0, nil
-	}
-
-	x509Cert, err := x509.ParseCertificate(certDERBlock.Bytes)
-	return x509Cert.NotBefore.Unix(), err
-
 }

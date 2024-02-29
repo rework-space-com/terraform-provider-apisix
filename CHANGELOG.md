@@ -1,4 +1,19 @@
-## 2.0.0 (Unreleased)
+## x.x.x (Unreleased)
+
+## 1.2.0 (29 Feb, 2024)
+
+BREAKING CHANGES:
+
+- resource/apisix_ssl_certificate: The `validity_end` and `validity_start` attributes have been removed due to the APISIX v3.6.0 compatibility issue. (https://github.com/rework-space-com/terraform-provider-apisix/issues/10)
+
+BUG FIXES:
+
+- resource/apisix_ssl_certificate: Fix compatibility issue with resource `apisix_ssl_certificate` (https://github.com/rework-space-com/terraform-provider-apisix/issues/10)
+
+ENHANCEMENTS:
+
+- privider: Upgrade provider to support APISIX v3.8.0 (https://github.com/rework-space-com/terraform-provider-apisix/issues/6)
+- provider: Fix vulnerability issues by updating the terraform-provider-framework (https://github.com/rework-space-com/terraform-provider-apisix/issues/12)
 
 ## 1.1.2 (13 Feb, 2024)
 

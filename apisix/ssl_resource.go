@@ -74,31 +74,6 @@ func (r *sslCertificateResource) ModifyPlan(ctx context.Context, req resource.Mo
 		}
 	}
 
-	notAfterDate, err := model.GetCertNotAfter(state.Certificate.ValueString())
-	if err != nil {
-		tflog.Error(ctx, "Error. NotAfter date can't be determined.")
-	}
-	tflog.Debug(ctx, "The certificate expiration date is ", map[string]interface{ any }{
-		"notAfter": notAfterDate,
-	})
-	diags = resp.Plan.SetAttribute(ctx, path.Root("validity_end"), &notAfterDate)
-	resp.Diagnostics.Append(diags...)
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	notBeforeDate, err := model.GetCertNotBefore(state.Certificate.ValueString())
-	if err != nil {
-		tflog.Error(ctx, "Error. NotBefore date can't be determined.")
-	}
-	tflog.Debug(ctx, "The certificate start date is ", map[string]interface{ any }{
-		"notBefore": notBeforeDate,
-	})
-	diags = resp.Plan.SetAttribute(ctx, path.Root("validity_start"), &notBeforeDate)
-	resp.Diagnostics.Append(diags...)
-	if resp.Diagnostics.HasError() {
-		return
-	}
 }
 
 // Configure adds the provider configured client to the resource.

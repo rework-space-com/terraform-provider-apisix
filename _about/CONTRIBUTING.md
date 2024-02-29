@@ -9,7 +9,7 @@ Terraform [provider development documentation](https://www.terraform.io/docs/ext
 
 ## Building the provider
 
-Run the following command to build the provider
+There is a [makefile](../GNUmakefile) to build the provider and place it in repos root dir.
 
 ```shell
 $ go build -o terraform-provider-apisix
@@ -66,6 +66,16 @@ provider "apisix" {
   endpoint = "http://127.0.0.1:9180"
   api_key  = "edd1c9f034335f136f87ad84b625c8f1"
 }
+```
+
+### Create documentation
+
+When creating or updating resources/data resources please make sure to update the examples in the respective folder (`./examples/resources/<name>` for resources, `./examples/data-sources/<name>` for data sources)
+
+Next you can use the following command to generate the terraform documentation from go files
+
+```shell
+make doc
 ```
 
 ### Start Apache APISIX locally
