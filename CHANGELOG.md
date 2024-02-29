@@ -1,6 +1,6 @@
-## x.0.0 (Unreleased)
+## x.x.x (Unreleased)
 
-## 1.3.0 (29 Feb, 2024)
+## 1.2.0 (29 Feb, 2024)
 
 BREAKING CHANGES:
 
