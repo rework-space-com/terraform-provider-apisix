@@ -59,7 +59,6 @@ func (r *routeResource) ConfigValidators(ctx context.Context) []resource.ConfigV
 			path.MatchRoot("remote_addrs"),
 		),
 		resourcevalidator.Conflicting(
-			path.MatchRoot("plugins"),
 			path.MatchRoot("plugin_config_id"),
 			path.MatchRoot("script"),
 		),
