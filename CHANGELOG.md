@@ -1,5 +1,11 @@
 ## x.x.x (Unreleased)
 
+## 1.2.1 (22 Mar, 2024)
+
+BUG FIXES:
+
+- resource/apisix_route: Can't create a route that uses `plugins` and `plugin_config_id` attributest simultaneously ([#15](https://github.com/rework-space-com/terraform-provider-apisix/issues/15))
+
 ## 1.2.0 (29 Feb, 2024)
 
 BREAKING CHANGES:
