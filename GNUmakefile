@@ -1,7 +1,10 @@
-default: build
+default: install
 
-build: 
+install: 
 	go install
+	
+build: 
+	go build
 
 testacc:
 	TF_ACC=1 go test ./... -v $(TESTARGS) -timeout 120m

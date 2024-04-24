@@ -9,10 +9,10 @@ Terraform [provider development documentation](https://www.terraform.io/docs/ext
 
 ## Building the provider
 
-There is a [makefile](../GNUmakefile) to build the provider and place it in repos root dir.
+There is a [makefile](../GNUmakefile) to help build the provider. You can build the provider by running `make build`.
 
 ```shell
-$ go build -o terraform-provider-apisix
+$ make build
 ```
 
 ### Tests
@@ -25,9 +25,9 @@ $ make testacc
 
 ## Install provider locally
 You can install provider locally for development and testing.
-Use the `go install` command to compile the provider into a binary and install it in your `GOBIN` path.
+Use the `make install` command to compile the provider into a binary and install it in your `GOBIN` path.
 ```shell
-$ go install .
+$ make install
 ```
 
 Terraform allows you to use local provider builds by setting a `dev_overrides` block in a configuration file called `.terraformrc`. This block overrides all other configured installation methods.
