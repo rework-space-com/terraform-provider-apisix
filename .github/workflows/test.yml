@@ -6,10 +6,10 @@ name: Tests
 on:
   pull_request:
     paths-ignore:
-      - 'README.md'
+      - '**.md'
   push:
     paths-ignore:
-      - 'README.md'
+      - '**.md'
 
 # Testing only needs permissions to read the repository contents.
 permissions:
