@@ -142,14 +142,14 @@ func CertSNIS(crt string, key string) ([]string, error) {
 	}
 
 	var snis []string
-	if x509Cert.DNSNames != nil && len(x509Cert.DNSNames) > 0 {
+	if len(x509Cert.DNSNames) > 0 {
 		snis = x509Cert.DNSNames
-	} else if x509Cert.IPAddresses != nil && len(x509Cert.IPAddresses) > 0 {
+	} else if len(x509Cert.IPAddresses) > 0 {
 		for _, ip := range x509Cert.IPAddresses {
 			snis = append(snis, ip.String())
 		}
 	} else {
-		if x509Cert.Subject.Names != nil && len(x509Cert.Subject.Names) > 1 {
+		if len(x509Cert.Subject.Names) > 1 {
 			var attributeTypeNames = map[string]string{
 				"2.5.4.6":  "C",
 				"2.5.4.10": "O",
