@@ -8,7 +8,7 @@ BUG FIXES:
 
 ENHANCEMENTS:
 
-- privider: Upgrade provider to support APISIX v3.11.0 ([#20](https://github.com/rework-space-com/terraform-provider-apisix/issues/20))
+- provider: Upgrade provider to support APISIX v3.11.0 ([#20](https://github.com/rework-space-com/terraform-provider-apisix/issues/20))
 - provider: Fix vulnerability issues by updating the terraform-provider-framework ([#21](https://github.com/rework-space-com/terraform-provider-apisix/issues/22))
 
 ## 1.2.1 (22 Mar, 2024)
@@ -29,7 +29,7 @@ BUG FIXES:
 
 ENHANCEMENTS:
 
-- privider: Upgrade provider to support APISIX v3.8.0 (https://github.com/rework-space-com/terraform-provider-apisix/issues/6)
+- provider: Upgrade provider to support APISIX v3.8.0 (https://github.com/rework-space-com/terraform-provider-apisix/issues/6)
 - provider: Fix vulnerability issues by updating the terraform-provider-framework (https://github.com/rework-space-com/terraform-provider-apisix/issues/12)
 
 ## 1.1.2 (13 Feb, 2024)
