@@ -2,7 +2,7 @@
 Terraform provider to configure Apache APISIX® using its API.
 
 ## APISIX Compatibility
-Tested with Apache APISIX® `3.8.0`.
+Tested with Apache APISIX® `3.11.0`.
 
 ## Usage
 The provider configuration method loads configuration data either from environment variables, or from the provider block in Terraform configuration. 
@@ -23,7 +23,7 @@ terraform plan
 ## Development
 
 -	[Terraform](https://www.terraform.io/downloads.html) 1.x
--	[Go](https://golang.org/doc/install) 1.20.x (to build the provider plugin)
+-	[Go](https://golang.org/doc/install) 1.22.x (to build the provider plugin)
 
 ## Contributing to the provider
 

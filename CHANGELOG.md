@@ -1,5 +1,16 @@
 ## x.x.x (Unreleased)
 
+## 1.2.2 (17 Dec, 2024)
+
+BUG FIXES:
+
+- provider: Authentication failed on APISIX 3.11.0 ([#20](https://github.com/rework-space-com/terraform-provider-apisix/issues/20))
+
+ENHANCEMENTS:
+
+- privider: Upgrade provider to support APISIX v3.11.0 ([#20](https://github.com/rework-space-com/terraform-provider-apisix/issues/20))
+- provider: Fix vulnerability issues by updating the terraform-provider-framework ([#21](https://github.com/rework-space-com/terraform-provider-apisix/issues/22))
+
 ## 1.2.1 (22 Mar, 2024)
 
 BUG FIXES:
