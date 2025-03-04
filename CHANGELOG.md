@@ -1,6 +1,7 @@
 ## x.x.x (Unreleased)
 
 ## 1.2.3 (4 Mar, 2025)
+
 ENHANCEMENTS:
 
 - provider: add support for `PURGE` http method by @peter-ho-rozettatech in https://github.com/rework-space-com/terraform-provider-apisix/pull/24
