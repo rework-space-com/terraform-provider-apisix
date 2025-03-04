@@ -8,9 +8,6 @@ on:
     paths:
       - '.github/workflows/test.yml'
       - '**.go'
-    paths-ignore:
-      - 'README.md'
-      - 'CHANGELOG.md'
 
 # Testing only needs permissions to read the repository contents.
 permissions:
