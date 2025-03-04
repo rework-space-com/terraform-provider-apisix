@@ -1,5 +1,14 @@
 ## x.x.x (Unreleased)
 
+## 1.2.3 (4 Mar, 2025)
+ENHANCEMENTS:
+
+- provider: add support for `PURGE` http method by @peter-ho-rozettatech in https://github.com/rework-space-com/terraform-provider-apisix/pull/24
+
+BUG FIXES:
+
+- workflows: Fix test workflow by adding a workflow step to install terraform ([#25](https://github.com/rework-space-com/terraform-provider-apisix/issues/25))
+
 ## 1.2.2 (17 Dec, 2024)
 
 BUG FIXES:
