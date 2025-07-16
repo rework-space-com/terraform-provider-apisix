@@ -86,7 +86,7 @@ resource "apisix_upstream" "example" {
 - `scheme` (String) The scheme used when communicating with the Upstream. For an L7 proxy, this value can be one of `http`, `https`, `grpc`, `grpcs`. For an L4 proxy, this value could be one of `tcp`, `udp`, `tls`. Defaults to `http`.
 - `service_name` (String) Service name used for service discovery. Can't be used with `nodes`
 - `timeout` (Attributes) Sets the timeout (in seconds) for connecting to, and sending and receiving messages to and from the Upstream. (see [below for nested schema](#nestedatt--timeout))
-- `tls_client_cert_id` (String) Set the referenced SSL id.
+- `tls` (Attributes) Configures the TLS client certificate for the upstream. (see [below for nested schema](#nestedatt--tls))
 - `type` (String) Load balancing algorithm to be used, and the default value is `roundrobin`.
 Can be one of the following: `roundrobin`, `chash`, `ewma` or `least_conn`
 - `upstream_host` (String) Specifies the host of the Upstream request. This is only valid if the `pass_host` is set to `rewrite`.
@@ -203,6 +203,16 @@ Required:
 - `connect` (Number)
 - `read` (Number)
 - `send` (Number)
+
+
+<a id="nestedatt--tls"></a>
+### Nested Schema for `tls`
+
+Optional:
+
+- `client_cert` (String) Sets the client certificate while connecting to a TLS Upstream. Can't be used with `tls.client_cert_id`.
+- `client_cert_id` (String) The ID of the client certificate to use for TLS. Can't be used with `tls.client_cert` and `tls.client_key`.
+- `client_key` (String) Sets the client key while connecting to a TLS Upstream. Can't be used with `tls.client_cert_id`.
 
 ## Import
 
