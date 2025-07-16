@@ -16,27 +16,26 @@ import (
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 )
 
-// UpstreamResourceModel maps the resource schema data.
 type UpstreamResourceModel struct {
-	ID              types.String               `tfsdk:"id"`
-	Type            types.String               `tfsdk:"type"`
-	ServiceName     types.String               `tfsdk:"service_name"`
-	DiscoveryType   types.String               `tfsdk:"discovery_type"`
-	Timeout         *TimeoutType               `tfsdk:"timeout"`
-	Name            types.String               `tfsdk:"name"`
-	Desc            types.String               `tfsdk:"desc"`
-	PassHost        types.String               `tfsdk:"pass_host"`
-	Scheme          types.String               `tfsdk:"scheme"`
-	Retries         types.Int64                `tfsdk:"retries"`
-	RetryTimeout    types.Int64                `tfsdk:"retry_timeout"`
-	Labels          types.Map                  `tfsdk:"labels"`
-	UpstreamHost    types.String               `tfsdk:"upstream_host"`
-	HashOn          types.String               `tfsdk:"hash_on"`
-	Key             types.String               `tfsdk:"key"`
-	KeepalivePool   *UpstreamKeepAlivePoolType `tfsdk:"keepalive_pool"`
-	TLSClientCertID types.String               `tfsdk:"tls_client_cert_id"`
-	Checks          *UpstreamChecksType        `tfsdk:"checks"`
-	Nodes           *[]UpstreamNodeType        `tfsdk:"nodes"`
+	ID            types.String               `tfsdk:"id"`
+	Type          types.String               `tfsdk:"type"`
+	ServiceName   types.String               `tfsdk:"service_name"`
+	DiscoveryType types.String               `tfsdk:"discovery_type"`
+	Timeout       *TimeoutType               `tfsdk:"timeout"`
+	Name          types.String               `tfsdk:"name"`
+	Desc          types.String               `tfsdk:"desc"`
+	PassHost      types.String               `tfsdk:"pass_host"`
+	Scheme        types.String               `tfsdk:"scheme"`
+	Retries       types.Int64                `tfsdk:"retries"`
+	RetryTimeout  types.Int64                `tfsdk:"retry_timeout"`
+	Labels        types.Map                  `tfsdk:"labels"`
+	UpstreamHost  types.String               `tfsdk:"upstream_host"`
+	HashOn        types.String               `tfsdk:"hash_on"`
+	Key           types.String               `tfsdk:"key"`
+	KeepalivePool *UpstreamKeepAlivePoolType `tfsdk:"keepalive_pool"`
+	TLS           *UpstreamTLSType           `tfsdk:"tls"`
+	Checks        *UpstreamChecksType        `tfsdk:"checks"`
+	Nodes         *[]UpstreamNodeType        `tfsdk:"nodes"`
 }
 
 var UpstreamSchema = schema.Schema{
@@ -127,12 +126,9 @@ var UpstreamSchema = schema.Schema{
 			ElementType:         types.StringType,
 		},
 		"keepalive_pool": UpstreamKeepAlivePoolSchemaAttribute,
-		"tls_client_cert_id": schema.StringAttribute{
-			MarkdownDescription: "Set the referenced SSL id.",
-			Optional:            true,
-		},
-		"checks": UpstreamChecksSchemaAttribute,
-		"nodes":  UpstreamNodesSchemaAttribute,
+		"tls":            UpstreamTLSSchemaAttribute,
+		"checks":         UpstreamChecksSchemaAttribute,
+		"nodes":          UpstreamNodesSchemaAttribute,
 	},
 }
 
@@ -149,7 +145,6 @@ func UpstreamFromTerraformToAPI(ctx context.Context, terraformDataModel *Upstrea
 	apiDataModel.UpstreamHost = terraformDataModel.UpstreamHost.ValueStringPointer()
 	apiDataModel.HashOn = terraformDataModel.HashOn.ValueStringPointer()
 	apiDataModel.Key = terraformDataModel.Key.ValueStringPointer()
-	apiDataModel.TLSClientCertID = terraformDataModel.TLSClientCertID.ValueStringPointer()
 
 	labelsDiag = terraformDataModel.Labels.ElementsAs(ctx, &apiDataModel.Labels, false)
 
@@ -157,6 +152,7 @@ func UpstreamFromTerraformToAPI(ctx context.Context, terraformDataModel *Upstrea
 	apiDataModel.KeepalivePool = UpstreamKeepAlivePoolFromTerraformToAPI(terraformDataModel.KeepalivePool)
 	apiDataModel.Checks = UpstreamChecksFromTerraformToAPI(ctx, terraformDataModel.Checks)
 	apiDataModel.Nodes = UpstreamNodesFromTerraformToAPI(ctx, terraformDataModel.Nodes)
+	apiDataModel.TLS = UpstreamTLSFromTerraformToAPI(ctx, terraformDataModel.TLS)
 
 	tflog.Debug(ctx, "Result of UpstreamFromTerraformToAPI", map[string]any{
 		"Values": apiDataModel,
@@ -179,7 +175,6 @@ func UpstreamFromApiToTerraform(ctx context.Context, apiDataModel *api_client.Up
 	terraformDataModel.UpstreamHost = types.StringPointerValue(apiDataModel.UpstreamHost)
 	terraformDataModel.HashOn = types.StringPointerValue(apiDataModel.HashOn)
 	terraformDataModel.Key = types.StringPointerValue(apiDataModel.Key)
-	terraformDataModel.TLSClientCertID = types.StringPointerValue(apiDataModel.TLSClientCertID)
 
 	terraformDataModel.Labels, labelsDiag = types.MapValueFrom(ctx, types.StringType, apiDataModel.Labels)
 
@@ -187,6 +182,7 @@ func UpstreamFromApiToTerraform(ctx context.Context, apiDataModel *api_client.Up
 	terraformDataModel.KeepalivePool = UpstreamKeepAlivePoolFromAPIToTerraform(apiDataModel.KeepalivePool)
 	terraformDataModel.Checks = UpstreamChecksFromApiToTerraform(ctx, apiDataModel.Checks)
 	terraformDataModel.Nodes = UpstreamNodesFromApiToTerraform(ctx, apiDataModel.Nodes)
+	terraformDataModel.TLS = UpstreamTLSFromAPIToTerraform(ctx, apiDataModel.TLS)
 
 	tflog.Debug(ctx, "Result of UpstreamFromApiToTerraform", map[string]any{
 		"Values": terraformDataModel,

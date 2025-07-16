@@ -54,6 +54,14 @@ func (r *upstreamResource) ConfigValidators(ctx context.Context) []resource.Conf
 			path.MatchRoot("service_name"),
 			path.MatchRoot("discovery_type"),
 		),
+		resourcevalidator.Conflicting(
+			path.MatchRoot("tls").AtName("client_cert_id"),
+			path.MatchRoot("tls").AtName("client_cert"),
+		),
+		resourcevalidator.Conflicting(
+			path.MatchRoot("tls").AtName("client_cert_id"),
+			path.MatchRoot("tls").AtName("client_key"),
+		),
 	}
 }
 
