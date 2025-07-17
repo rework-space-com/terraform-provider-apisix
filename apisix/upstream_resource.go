@@ -9,7 +9,6 @@ import (
 	"terraform-provider-apisix/apisix/model"
 
 	"github.com/hashicorp/terraform-plugin-framework-validators/resourcevalidator"
-	//	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
@@ -60,6 +59,10 @@ func (r *upstreamResource) ConfigValidators(ctx context.Context) []resource.Conf
 		),
 		resourcevalidator.Conflicting(
 			path.MatchRoot("tls").AtName("client_cert_id"),
+			path.MatchRoot("tls").AtName("client_key"),
+		),
+		resourcevalidator.RequiredTogether(
+			path.MatchRoot("tls").AtName("client_cert"),
 			path.MatchRoot("tls").AtName("client_key"),
 		),
 	}
@@ -116,6 +119,9 @@ func (r *upstreamResource) Create(ctx context.Context, req resource.CreateReques
 
 	// Map response body to schema and populate Computed attribute values
 	newState, labelsDiag := model.UpstreamFromApiToTerraform(ctx, newUpstreamResponse)
+	if plan.TLS != nil && newState.TLS != nil {
+		newState.TLS.ClientKey = plan.TLS.ClientKey
+	}
 
 	resp.Diagnostics.Append(labelsDiag...)
 	if resp.Diagnostics.HasError() {
@@ -153,6 +159,9 @@ func (r *upstreamResource) Read(ctx context.Context, req resource.ReadRequest, r
 
 	// Overwrite with refreshed state
 	newState, labelsDiag := model.UpstreamFromApiToTerraform(ctx, upsreamResponse)
+	if state.TLS != nil && newState.TLS != nil {
+		newState.TLS.ClientKey = state.TLS.ClientKey
+	}
 
 	resp.Diagnostics.Append(labelsDiag...)
 	if resp.Diagnostics.HasError() {
@@ -208,6 +217,9 @@ func (r *upstreamResource) Update(ctx context.Context, req resource.UpdateReques
 	}
 
 	newState, labelsDiag := model.UpstreamFromApiToTerraform(ctx, updatedUpstream)
+	if plan.TLS != nil && newState.TLS != nil {
+		newState.TLS.ClientKey = plan.TLS.ClientKey
+	}
 	resp.Diagnostics.Append(labelsDiag...)
 	if resp.Diagnostics.HasError() {
 		return

@@ -212,7 +212,7 @@ Optional:
 
 - `client_cert` (String) Sets the client certificate while connecting to a TLS Upstream. Can't be used with `tls.client_cert_id`.
 - `client_cert_id` (String) The ID of the client certificate to use for TLS. Can't be used with `tls.client_cert` and `tls.client_key`.
-- `client_key` (String) Sets the client key while connecting to a TLS Upstream. Can't be used with `tls.client_cert_id`.
+- `client_key` (String, Sensitive) Sets the client key while connecting to a TLS Upstream. Can't be used with `tls.client_cert_id`.
 
 ## Import
 

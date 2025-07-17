@@ -31,36 +31,37 @@ var UpstreamTLSSchemaAttribute = schema.SingleNestedAttribute{
 		"client_key": schema.StringAttribute{
 			MarkdownDescription: "Sets the client key while connecting to a TLS Upstream. Can't be used with `tls.client_cert_id`.",
 			Optional:            true,
+			Sensitive:           true,
 		},
 	},
 }
 
-func UpstreamTLSFromTerraformToAPI(ctx context.Context, terraformDataModel *UpstreamTLSType) (apiDataModel *api_client.UpstreamTLSType) {
+func UpstreamTLSFromTerraformToAPI(ctx context.Context, terraformDataModel *UpstreamTLSType) *api_client.UpstreamTLSType {
 	if terraformDataModel == nil {
 		tflog.Debug(ctx, "Can't transform upstream TLS to api model")
-		return
+		return nil
 	}
 
-	result := api_client.UpstreamTLSType{
-		ClientCertID: terraformDataModel.ClientCertID.ValueString(),
-		ClientCert:   terraformDataModel.ClientCert.ValueString(),
-		ClientKey:    terraformDataModel.ClientKey.ValueString(),
+	result := &api_client.UpstreamTLSType{
+		ClientCertID: terraformDataModel.ClientCertID.ValueStringPointer(),
+		ClientCert:   terraformDataModel.ClientCert.ValueStringPointer(),
+		ClientKey:    terraformDataModel.ClientKey.ValueStringPointer(),
 	}
 
-	return &result
+	return result
 }
 
-func UpstreamTLSFromAPIToTerraform(ctx context.Context, apiDataModel *api_client.UpstreamTLSType) (terraformDataModel *UpstreamTLSType) {
+func UpstreamTLSFromAPIToTerraform(ctx context.Context, apiDataModel *api_client.UpstreamTLSType) *UpstreamTLSType {
 	if apiDataModel == nil {
 		tflog.Debug(ctx, "Can't transform upstream TLS from api model")
-		return
+		return nil
 	}
 
-	result := UpstreamTLSType{
-		ClientCertID: types.StringValue(apiDataModel.ClientCertID),
-		ClientCert:   types.StringValue(apiDataModel.ClientCert),
-		ClientKey:    types.StringValue(apiDataModel.ClientKey),
+	result := &UpstreamTLSType{
+		ClientCertID: types.StringPointerValue(apiDataModel.ClientCertID),
+		ClientCert:   types.StringPointerValue(apiDataModel.ClientCert),
+		ClientKey:    types.StringNull(),
 	}
 
-	return &result
+	return result
 }
