@@ -16,4 +16,5 @@ var HttpMethods = []string{
 	"PATCH",
 	"TRACE",
 	"PURGE",
+	"CONNECT",
 }
