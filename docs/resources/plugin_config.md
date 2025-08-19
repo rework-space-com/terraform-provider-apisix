@@ -46,6 +46,8 @@ resource "apisix_plugin_config" "example" {
 
 Import is supported using the following syntax:
 
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
+
 ```shell
 # Plugin config can be imported by specifying the numeric identifier.
 terraform import apisix_plugin_config.example 123
