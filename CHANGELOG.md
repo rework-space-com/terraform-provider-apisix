@@ -1,5 +1,23 @@
 ## x.x.x (Unreleased)
 
+## 1.4.0 (17 Jul, 2025)
+
+ENHANCEMENTS:
+
+- provider: add support for `CONNECT` http method by @tgal in https://github.com/rework-space-com/terraform-provider-apisix/pull/32
+
+## 1.3.1 (17 Jul, 2025)
+
+BUG FIXES:
+
+- resource/apisix_upstream: TLS support in upstream resource by @holubovskyi in https://github.com/rework-space-com/terraform-provider-apisix/pull/30
+
+## 1.3.0 (16 Jul, 2025)
+
+BUG FIXES:
+
+- resource/apisix_upstream: Upstream TLS cert handling by @holubovskyi in https://github.com/rework-space-com/terraform-provider-apisix/pull/29
+
 ## 1.2.3 (4 Mar, 2025)
 
 ENHANCEMENTS:
