@@ -23,7 +23,7 @@ terraform plan
 ## Development
 
 -	[Terraform](https://www.terraform.io/downloads.html) 1.x
--	[Go](https://golang.org/doc/install) 1.22.x (to build the provider plugin)
+-	[Go](https://golang.org/doc/install) 1.24.x (to build the provider plugin)
 
 ## Contributing to the provider
 
