@@ -46,6 +46,8 @@ resource "apisix_consumer_group" "example" {
 
 Import is supported using the following syntax:
 
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
+
 ```shell
 # Consumer group can be imported by specifying the numeric identifier.
 terraform import apisix_consumer_group.example 123
