@@ -9,7 +9,6 @@ ENHANCEMENTS:
 
 - provider: Update the version of Go and dependencies by @holubovskyi in https://github.com/rework-space-com/terraform-provider-apisix/pull/34
 
-
 ## 1.4.0 (13 Aug, 2025)
 
 ENHANCEMENTS:
