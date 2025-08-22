@@ -6,13 +6,9 @@ import (
 
 	api_client "github.com/holubovskyi/apisix-client-go"
 
-	"terraform-provider-apisix/apisix/model"
-
-	//"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
-
-	//"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
+	"terraform-provider-apisix/apisix/model"
 )
 
 // Ensure the implementation satisfies the expected interfaces.
@@ -126,8 +122,6 @@ func (r *pluginMetadataResource) Read(ctx context.Context, req resource.ReadRequ
 
 	// Convert API response to Terraform state
 	newState := model.PluginMetadataFromApiToTerraform(ctx, pluginMetadataResponse)
-
-	// CRITICAL FIX: If API returns null metadata but we have metadata in state, preserve it
 	if newState.Metadata.IsNull() && !state.Metadata.IsNull() {
 		newState.Metadata = state.Metadata
 	}

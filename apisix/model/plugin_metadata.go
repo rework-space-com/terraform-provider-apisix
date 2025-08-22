@@ -36,13 +36,9 @@ var PluginMetadataSchema = schema.Schema{
 }
 
 func PluginMetadataFromTerraformToApi(ctx context.Context, terraformDataModel *PluginMetadataResourceModel) (apiDataModel api_client.PluginMetadata) {
-	// Set the ID
 	apiDataModel.Id = terraformDataModel.Id.ValueStringPointer()
-
-	// CRITICAL FIX: Actually set the metadata that you parsed
 	apiDataModel.Metadata = PluginsStringToJson(ctx, terraformDataModel.Metadata)
 
-	// Debug logging shows you're parsing correctly, but not setting it
 	tflog.Debug(ctx, "Result of the PluginMetadataFromTerraformToApi", map[string]any{
 		"id":       apiDataModel.Id,
 		"metadata": apiDataModel.Metadata,
