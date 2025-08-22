@@ -1,6 +1,15 @@
 ## x.x.x (Unreleased)
 
-## 1.4.0 (17 Jul, 2025)
+## 1.5.0 (22 Aug, 2025)
+
+FEATURES:
+- resource/apisix_plugin_metadata: Add plugin metadata resource ([#31](https://github.com/rework-space-com/terraform-provider-apisix/issues/31))
+
+ENHANCEMENTS:
+
+- provider: Update the version of Go and dependencies by @holubovskyi in https://github.com/rework-space-com/terraform-provider-apisix/pull/34
+
+## 1.4.0 (13 Aug, 2025)
 
 ENHANCEMENTS:
 
