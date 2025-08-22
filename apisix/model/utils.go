@@ -8,42 +8,53 @@ import (
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 )
 
-func PluginsStringToJson(ctx context.Context, str types.String) (jsonPointer *map[string]interface{}) {
-
-	if str.IsNull() {
+func PluginsStringToJson(ctx context.Context, pluginsString types.String) *map[string]interface{} {
+	if pluginsString.IsNull() || pluginsString.IsUnknown() {
 		return nil
 	}
 
-	var result map[string]interface{}
-	bytes := []byte(str.ValueString())
-
-	err := json.Unmarshal(bytes, &result)
-	if err != nil {
-		tflog.Error(ctx, "Error", map[string]interface{ any }{
-			"Error converting plugins to json": err,
-			"Input string is":                  str.ValueString(),
-		})
-		panic(err)
+	pluginsStr := pluginsString.ValueString()
+	if pluginsStr == "" {
+		return nil
 	}
 
-	return &result
+	var pluginsMap map[string]interface{}
+	if err := json.Unmarshal([]byte(pluginsStr), &pluginsMap); err != nil {
+		tflog.Error(ctx, "Failed to parse plugins JSON", map[string]interface{}{
+			"error":       err.Error(),
+			"json_string": pluginsStr,
+		})
+		return nil
+	}
+
+	tflog.Debug(ctx, "Parsed metadata JSON", map[string]interface{}{
+		"input_string": pluginsStr,
+		"parsed_map":   pluginsMap,
+	})
+
+	return &pluginsMap
 }
 
-func PluginsFromJsonToString(ctx context.Context, jsonPointer *map[string]interface{}) (str types.String) {
-	if jsonPointer == nil {
+func PluginsFromJsonToString(ctx context.Context, metadataMap *map[string]interface{}) types.String {
+	if metadataMap == nil || len(*metadataMap) == 0 {
 		return types.StringNull()
 	}
 
-	data, err := json.Marshal(jsonPointer)
+	metadataBytes, err := json.Marshal(*metadataMap)
 	if err != nil {
-		tflog.Error(ctx, "Error converting plugins to terraform values")
-		panic(err)
+		tflog.Error(ctx, "Failed to marshal metadata to JSON", map[string]interface{}{
+			"error": err.Error(),
+		})
+		return types.StringNull()
 	}
 
-	jsonStr := string(data)
+	jsonString := string(metadataBytes)
+	tflog.Debug(ctx, "Converted metadata to JSON string", map[string]interface{}{
+		"input_map":     *metadataMap,
+		"output_string": jsonString,
+	})
 
-	return types.StringValue(jsonStr)
-
+	return types.StringValue(jsonString)
 }
 
 func VarsStringToJson(ctx context.Context, str types.String) (jsonPointer *[]interface{}) {
