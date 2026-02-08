@@ -178,15 +178,16 @@ func (p *apisixProvider) DataSources(_ context.Context) []func() datasource.Data
 // Resources defines the resources implemented in the provider.
 func (p *apisixProvider) Resources(_ context.Context) []func() resource.Resource {
 	return []func() resource.Resource{
-		NewSSLCertificateResource,
-		NewUpstreamResource,
-		NewServiceResource,
-		NewConsumerResource,
-		NewRouteResource,
-		NewGlobalRuleResource,
-		NewStreamRouteResource,
 		NewConsumerGroupResource,
+		NewConsumerResource,
+		NewGlobalRuleResource,
 		NewPluginConfigResource,
 		NewPluginMetadataResource,
+		NewRouteResource,
+		NewSSLCertificateResource,
+		NewSecretResource,
+		NewServiceResource,
+		NewStreamRouteResource,
+		NewUpstreamResource,
 	}
 }
