@@ -123,8 +123,8 @@ github.com/hashicorp/terraform-svchost v0.1.1 h1:EZZimZ1GxdqFRinZ1tpJwVxxt49xc/S
 github.com/hashicorp/terraform-svchost v0.1.1/go.mod h1:mNsjQfZyf/Jhz35v6/0LWcv26+X7JPS+buii2c9/ctc=
 github.com/hashicorp/yamux v0.1.1 h1:yrQxtgseBDrq9Y652vSRDvsKCJKOUD+GzTS4Y0Y8pvE=
 github.com/hashicorp/yamux v0.1.1/go.mod h1:CtWFDAQgb7dxtzFs4tWbplKIe2jSi3+5vKbgIO0SLnQ=
-github.com/holubovskyi/apisix-client-go v1.4.1 h1:Z0Vqfubo0nleuChfLcsWLr/ZQ1J3+g4UMttfAx/8E9Y=
-github.com/holubovskyi/apisix-client-go v1.4.1/go.mod h1:MYo1juyaHbX6RWe9S3DoqWqL0Ko/2pr3ZpDQVNKVXqI=
+github.com/holubovskyi/apisix-client-go v1.5.1 h1:Z2XVdSV6x+1Gr1dm9CXVEqQTHGkJECNel8IANbUo2WY=
+github.com/holubovskyi/apisix-client-go v1.5.1/go.mod h1:MYo1juyaHbX6RWe9S3DoqWqL0Ko/2pr3ZpDQVNKVXqI=
 github.com/huandu/xstrings v1.3.3 h1:/Gcsuc1x8JVbJ9/rlye4xZnVAbEkGauT8lbebqcQws4=
 github.com/huandu/xstrings v1.3.3/go.mod h1:y5/lhBue+AyNmUVz9RLU9xbLR0o4KIIExikq4ovT0aE=
 github.com/imdario/mergo v0.3.11/go.mod h1:jmQim1M+e3UYxmgPu/WyfjB3N3VflVyUjjjwH0dnCYA=
