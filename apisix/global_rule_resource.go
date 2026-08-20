@@ -82,8 +82,25 @@ func (r *globalRuleResource) Create(ctx context.Context, req resource.CreateRequ
 		return
 	}
 
+	// APISIX can return plugins that differ from what was sent (e.g.
+	// encrypt_fields come back as ciphertext, decrypted only on a
+	// subsequent GET) — re-fetch when that happens, the same way Update()
+	// already does after UpdateGlobalRule(). See route_resource.go
+	// Create() for the full explanation.
+	createdGlobalRule := newGlobalRuleReponse
+	if model.PluginsChanged(newGlobalRuleRequest.Plugins, newGlobalRuleReponse.Plugins) {
+		createdGlobalRule, err = r.client.GetGlobalRule(plan.ID.ValueString())
+		if err != nil {
+			resp.Diagnostics.AddError(
+				"Error Reading APISIX Global Rule",
+				"Could not read APISIX Global Rule by ID "+plan.ID.ValueString()+": "+err.Error(),
+			)
+			return
+		}
+	}
+
 	// Map response body to schema and populate Computed attribute values
-	newState := model.GlobalRuleFromApiToTerraform(ctx, newGlobalRuleReponse)
+	newState := model.GlobalRuleFromApiToTerraform(ctx, createdGlobalRule)
 	newState.Plugins = model.PreferPluginsValue(newState.Plugins, plan.Plugins)
 
 	// Set state to fully populated data

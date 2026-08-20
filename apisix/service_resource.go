@@ -82,8 +82,25 @@ func (r *serviceResource) Create(ctx context.Context, req resource.CreateRequest
 		return
 	}
 
+	// APISIX can return plugins that differ from what was sent (e.g.
+	// encrypt_fields come back as ciphertext, decrypted only on a
+	// subsequent GET) — re-fetch when that happens, the same way Update()
+	// already does after UpdateService(). See route_resource.go Create()
+	// for the full explanation.
+	createdService := newServiceReponse
+	if model.PluginsChanged(newServiceRequest.Plugins, newServiceReponse.Plugins) {
+		createdService, err = r.client.GetService(*newServiceReponse.ID)
+		if err != nil {
+			resp.Diagnostics.AddError(
+				"Error Reading APISIX Service",
+				"Could not read APISIX Service by ID "+*newServiceReponse.ID+": "+err.Error(),
+			)
+			return
+		}
+	}
+
 	// Map response body to schema and populate Computed attribute values
-	newState := model.ServiceFromApiToTerraform(ctx, newServiceReponse)
+	newState := model.ServiceFromApiToTerraform(ctx, createdService)
 	newState.Plugins = model.PreferPluginsValue(newState.Plugins, plan.Plugins)
 
 	// Set state to fully populated data

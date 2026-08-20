@@ -82,8 +82,24 @@ func (r *pluginConfigResource) Create(ctx context.Context, req resource.CreateRe
 		return
 	}
 
+	// APISIX can return plugins that differ from what was sent — re-fetch
+	// when that happens, the same way Update() already does after
+	// UpdatePluginConfig(). See route_resource.go Create() for the full
+	// explanation.
+	createdPluginConfig := newPluginConfigResponse
+	if model.PluginsChanged(newPluginConfigRequest.Plugins, newPluginConfigResponse.Plugins) {
+		createdPluginConfig, err = r.client.GetPluginConfig(plan.ID.ValueString())
+		if err != nil {
+			resp.Diagnostics.AddError(
+				"Error Reading APISIX Plugin Config",
+				"Could not read APISIX Plugin Config by ID "+plan.ID.ValueString()+": "+err.Error(),
+			)
+			return
+		}
+	}
+
 	// Map response body to schema and populate Computed attribute values
-	newState := model.PluginConfigFromApiToTerraform(ctx, newPluginConfigResponse)
+	newState := model.PluginConfigFromApiToTerraform(ctx, createdPluginConfig)
 	newState.Plugins = model.PreferPluginsValue(newState.Plugins, plan.Plugins)
 
 	// Set state to fully populated data

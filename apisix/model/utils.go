@@ -3,6 +3,7 @@ package model
 import (
 	"context"
 	"encoding/json"
+	"reflect"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
@@ -33,6 +34,22 @@ func PluginsStringToJson(ctx context.Context, pluginsString types.String) *map[s
 	})
 
 	return &pluginsMap
+}
+
+// PluginsChanged reports whether the plugins APISIX returned differ from what
+// was sent. APISIX can transform plugins server-side — most notably,
+// encrypt_fields (e.g. openid-connect's client_secret) come back as
+// ciphertext in a POST/PUT response but decrypted on a subsequent GET.
+// Callers use this to decide whether a re-fetch is needed to obtain the
+// canonical value, instead of always paying for an extra API call.
+func PluginsChanged(sent *map[string]interface{}, received *map[string]interface{}) bool {
+	if sent == nil && received == nil {
+		return false
+	}
+	if sent == nil || received == nil {
+		return true
+	}
+	return !reflect.DeepEqual(*sent, *received)
 }
 
 func PreferPluginsValue(apiValue types.String, fallbackValue types.String) types.String {

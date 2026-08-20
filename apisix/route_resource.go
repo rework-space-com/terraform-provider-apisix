@@ -106,8 +106,25 @@ func (r *routeResource) Create(ctx context.Context, req resource.CreateRequest, 
 		return
 	}
 
+	// APISIX can return plugins that differ from what was sent (e.g.
+	// encrypt_fields like openid-connect's client_secret come back as
+	// ciphertext, decrypted only on a subsequent GET) — re-fetch when that
+	// happens, the same way Update() already does after UpdateRoute(),
+	// otherwise the resource is permanently tainted.
+	createdRoute := newRouteResponse
+	if model.PluginsChanged(newRouteRequest.Plugins, newRouteResponse.Plugins) {
+		createdRoute, err = r.client.GetRoute(*newRouteResponse.ID)
+		if err != nil {
+			resp.Diagnostics.AddError(
+				"Error Reading APISIX Route",
+				"Could not read APISIX Route by ID "+*newRouteResponse.ID+": "+err.Error(),
+			)
+			return
+		}
+	}
+
 	// Map response body to schema and populate Computed attribute values
-	newState := model.RouteFromApiToTerraform(ctx, newRouteResponse)
+	newState := model.RouteFromApiToTerraform(ctx, createdRoute)
 	newState.Plugins = model.PreferPluginsValue(newState.Plugins, plan.Plugins)
 
 	// Set state to fully populated data

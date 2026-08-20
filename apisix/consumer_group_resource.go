@@ -82,8 +82,24 @@ func (r *consumerGroupResource) Create(ctx context.Context, req resource.CreateR
 		return
 	}
 
+	// APISIX can return plugins that differ from what was sent — re-fetch
+	// when that happens, the same way Update() already does after
+	// UpdateConsumerGroup(). See route_resource.go Create() for the full
+	// explanation.
+	createdConsumerGroup := newConsumerGroupResponse
+	if model.PluginsChanged(newConsumerGroupRequest.Plugins, newConsumerGroupResponse.Plugins) {
+		createdConsumerGroup, err = r.client.GetConsumerGroup(plan.ID.ValueString())
+		if err != nil {
+			resp.Diagnostics.AddError(
+				"Error Reading APISIX Consumer Group",
+				"Could not read APISIX Consumer Group by ID "+plan.ID.ValueString()+": "+err.Error(),
+			)
+			return
+		}
+	}
+
 	// Map response body to schema and populate Computed attribute values
-	newState := model.ConsumerGroupFromApiToTerraform(ctx, newConsumerGroupResponse)
+	newState := model.ConsumerGroupFromApiToTerraform(ctx, createdConsumerGroup)
 	newState.Plugins = model.PreferPluginsValue(newState.Plugins, plan.Plugins)
 
 	// Set state to fully populated data
