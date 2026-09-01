@@ -125,7 +125,7 @@ func (r *routeResource) Create(ctx context.Context, req resource.CreateRequest, 
 
 	// Map response body to schema and populate Computed attribute values
 	newState := model.RouteFromApiToTerraform(ctx, createdRoute)
-	newState.Plugins = model.PreferPluginsValue(newState.Plugins, plan.Plugins)
+	newState.Plugins = model.PreferPlanValue(plan.Plugins, newState.Plugins)
 
 	// Set state to fully populated data
 	diags = resp.State.Set(ctx, &newState)
@@ -203,7 +203,7 @@ func (r *routeResource) Update(ctx context.Context, req resource.UpdateRequest, 
 	}
 
 	newState := model.RouteFromApiToTerraform(ctx, updatedRoute)
-	newState.Plugins = model.PreferPluginsValue(newState.Plugins, plan.Plugins)
+	newState.Plugins = model.PreferPlanValue(plan.Plugins, newState.Plugins)
 
 	// Set state to fully populated data
 	diags = resp.State.Set(ctx, &newState)

@@ -101,7 +101,7 @@ func (r *serviceResource) Create(ctx context.Context, req resource.CreateRequest
 
 	// Map response body to schema and populate Computed attribute values
 	newState := model.ServiceFromApiToTerraform(ctx, createdService)
-	newState.Plugins = model.PreferPluginsValue(newState.Plugins, plan.Plugins)
+	newState.Plugins = model.PreferPlanValue(plan.Plugins, newState.Plugins)
 
 	// Set state to fully populated data
 	diags = resp.State.Set(ctx, &newState)
@@ -179,7 +179,7 @@ func (r *serviceResource) Update(ctx context.Context, req resource.UpdateRequest
 	}
 
 	newState := model.ServiceFromApiToTerraform(ctx, updatedService)
-	newState.Plugins = model.PreferPluginsValue(newState.Plugins, plan.Plugins)
+	newState.Plugins = model.PreferPlanValue(plan.Plugins, newState.Plugins)
 
 	// Set state to fully populated data
 	diags = resp.State.Set(ctx, &newState)

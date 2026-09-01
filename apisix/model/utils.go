@@ -62,6 +62,23 @@ func PreferPluginsValue(apiValue types.String, fallbackValue types.String) types
 	return types.StringNull()
 }
 
+// PreferPlanValue returns the planned value when it is known, falling back to the
+// value APISIX returned otherwise. Use it in Create/Update, where the new state
+// must match the plan or Terraform fails with "Provider produced inconsistent
+// result after apply": APISIX can return ciphertext for encrypt_fields (e.g.
+// openid-connect client_secret) that would not match the planned plaintext, so
+// the planned value is preferred. The API value remains as a fallback for
+// resources created without plugins configured.
+func PreferPlanValue(planValue types.String, apiValue types.String) types.String {
+	if !planValue.IsNull() && !planValue.IsUnknown() {
+		return planValue
+	}
+	if !apiValue.IsNull() && !apiValue.IsUnknown() {
+		return apiValue
+	}
+	return types.StringNull()
+}
+
 func PluginsFromJsonToString(ctx context.Context, metadataMap *map[string]interface{}) types.String {
 	if metadataMap == nil || len(*metadataMap) == 0 {
 		return types.StringNull()

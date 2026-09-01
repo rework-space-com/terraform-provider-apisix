@@ -101,7 +101,7 @@ func (r *globalRuleResource) Create(ctx context.Context, req resource.CreateRequ
 
 	// Map response body to schema and populate Computed attribute values
 	newState := model.GlobalRuleFromApiToTerraform(ctx, createdGlobalRule)
-	newState.Plugins = model.PreferPluginsValue(newState.Plugins, plan.Plugins)
+	newState.Plugins = model.PreferPlanValue(plan.Plugins, newState.Plugins)
 
 	// Set state to fully populated data
 	diags = resp.State.Set(ctx, &newState)
@@ -179,7 +179,7 @@ func (r *globalRuleResource) Update(ctx context.Context, req resource.UpdateRequ
 	}
 
 	newState := model.GlobalRuleFromApiToTerraform(ctx, updatedGlobalRule)
-	newState.Plugins = model.PreferPluginsValue(newState.Plugins, plan.Plugins)
+	newState.Plugins = model.PreferPlanValue(plan.Plugins, newState.Plugins)
 
 	// Set state to fully populated data
 	diags = resp.State.Set(ctx, &newState)

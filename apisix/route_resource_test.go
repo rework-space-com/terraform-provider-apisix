@@ -180,3 +180,86 @@ resource "apisix_route" "encrypted_plugin" {
 		},
 	})
 }
+
+// TestRouteResource_EncryptedPluginFieldUpdate covers the Update path with an
+// encrypt_field (openid-connect client_secret): an in-place Update re-PUTs the
+// identical field. Update() must set state.plugins to the planned value, or Terraform
+// fails with "Provider produced inconsistent result after apply".
+// NOTE: same stable-keyring caveat as TestServiceResource_EncryptedPluginField.
+func TestRouteResource_EncryptedPluginFieldUpdate(t *testing.T) {
+	encryptedFieldValue := "plaintext" + "-dummy-" + "value-" + "12345"
+
+	pluginsBlock := fmt.Sprintf(`
+		openid-connect = {
+			bearer_only   = true
+			unauth_action = "pass"
+			client_id     = "example-client-id"
+			client_secret = %q
+			discovery     = "https://example.com/.well-known/openid-configuration"
+		}
+`, encryptedFieldValue)
+
+	createConfig := providerConfig + `
+resource "apisix_route" "encrypted_plugin_update" {
+	name  = "EncryptedPluginFieldUpdate"
+	uris  = ["/encrypted-plugin-field-update"]
+	hosts = ["encrypted-plugin-field-update.example.com"]
+	plugins = jsonencode(
+		{
+` + pluginsBlock + `
+		}
+	)
+}
+`
+
+	// In-place Update (enable_websocket) re-PUTs the identical encrypted plugin field.
+	updatedConfig := providerConfig + `
+resource "apisix_route" "encrypted_plugin_update" {
+	name  = "EncryptedPluginFieldUpdate"
+	uris  = ["/encrypted-plugin-field-update"]
+	hosts = ["encrypted-plugin-field-update.example.com"]
+	enable_websocket = true
+	plugins = jsonencode(
+		{
+` + pluginsBlock + `
+		}
+	)
+}
+`
+
+	expectedPlugins := map[string]interface{}{
+		"openid-connect": map[string]interface{}{
+			"bearer_only":   true,
+			"unauth_action": "pass",
+			"client_id":     "example-client-id",
+			"client_secret": encryptedFieldValue,
+			"discovery":     "https://example.com/.well-known/openid-configuration",
+		},
+	}
+
+	check := resource.ComposeAggregateTestCheckFunc(
+		resource.TestCheckResourceAttrSet("apisix_route.encrypted_plugin_update", "id"),
+		resource.TestCheckResourceAttrWith("apisix_route.encrypted_plugin_update", "plugins", func(value string) error {
+			var actual interface{}
+			if err := json.Unmarshal([]byte(value), &actual); err != nil {
+				return fmt.Errorf("failed to unmarshal plugins: %w", err)
+			}
+			if !reflect.DeepEqual(actual, expectedPlugins) {
+				return fmt.Errorf("expected plugins to equal %#v, got %#v (state likely holds ciphertext from the PUT response instead of the plaintext configured value)", expectedPlugins, actual)
+			}
+			return nil
+		}),
+	)
+
+	resource.Test(t, resource.TestCase{
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			// Create and Read testing.
+			{Config: createConfig, Check: check},
+			// Update and Read testing.
+			{Config: updatedConfig, Check: check},
+			// Plan-only with the identical config must show no changes.
+			{Config: updatedConfig, PlanOnly: true},
+		},
+	})
+}

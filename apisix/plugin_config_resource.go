@@ -100,7 +100,7 @@ func (r *pluginConfigResource) Create(ctx context.Context, req resource.CreateRe
 
 	// Map response body to schema and populate Computed attribute values
 	newState := model.PluginConfigFromApiToTerraform(ctx, createdPluginConfig)
-	newState.Plugins = model.PreferPluginsValue(newState.Plugins, plan.Plugins)
+	newState.Plugins = model.PreferPlanValue(plan.Plugins, newState.Plugins)
 
 	// Set state to fully populated data
 	diags = resp.State.Set(ctx, &newState)
@@ -178,7 +178,7 @@ func (r *pluginConfigResource) Update(ctx context.Context, req resource.UpdateRe
 	}
 
 	newState := model.PluginConfigFromApiToTerraform(ctx, updatedPluginConfig)
-	newState.Plugins = model.PreferPluginsValue(newState.Plugins, plan.Plugins)
+	newState.Plugins = model.PreferPlanValue(plan.Plugins, newState.Plugins)
 
 	// Set state to fully populated data
 	diags = resp.State.Set(ctx, &newState)

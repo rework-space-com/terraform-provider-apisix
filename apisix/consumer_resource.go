@@ -100,7 +100,7 @@ func (r *consumerResource) Create(ctx context.Context, req resource.CreateReques
 
 	// Map response body to schema and populate Computed attribute values
 	newState := model.ConsumerFromApiToTerraform(ctx, createdConsumer)
-	newState.Plugins = model.PreferPluginsValue(newState.Plugins, plan.Plugins)
+	newState.Plugins = model.PreferPlanValue(plan.Plugins, newState.Plugins)
 
 	// Set state to fully populated data
 	diags = resp.State.Set(ctx, &newState)
@@ -178,7 +178,7 @@ func (r *consumerResource) Update(ctx context.Context, req resource.UpdateReques
 	}
 
 	newState := model.ConsumerFromApiToTerraform(ctx, updatedConsumer)
-	newState.Plugins = model.PreferPluginsValue(newState.Plugins, plan.Plugins)
+	newState.Plugins = model.PreferPlanValue(plan.Plugins, newState.Plugins)
 
 	// Set state to fully populated data
 	diags = resp.State.Set(ctx, &newState)

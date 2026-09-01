@@ -21,6 +21,13 @@ apisix:
   node_listen: 9080              # APISIX listening port
   enable_ipv6: false
 
+  # Enable field-level encryption so encrypt_fields are stored encrypted and returned
+  # as ciphertext on write -- exercised by the EncryptedPluginField tests.
+  data_encryption:
+    enable_encrypt_fields: true
+    keyring:
+      - "ff00ff00ff00ff00"
+
   enable_control: true
   control:
     ip: "0.0.0.0"
